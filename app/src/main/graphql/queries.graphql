@@ -1,5 +1,19 @@
-query RepositoryQuery{
-  repository(name:"tensorflow", owner:"tensorflow"){
-    id
-  }
+query SearchYelp($term: String!, $location: String!) {
+    search(term: $term, location: $location) {
+        total
+        business {
+            id
+            name
+            rating
+            photos
+            price
+            coordinates {
+                latitude
+                longitude
+            }
+            categories {
+                title
+            }
+        }
+    }
 }

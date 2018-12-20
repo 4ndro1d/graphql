@@ -1,11 +1,14 @@
 package com.example.ggwp.graphql.repository
 
+import SearchYelpQuery
+import com.apollographql.apollo.api.Response
+import io.reactivex.Observable
+
 interface Repository {
-    fun getSomething(): String
+    fun getSomething(): Observable<Response<SearchYelpQuery.Data>>
 }
 
-class RepositoryImpl(val remoteRepository: RemoteRepository) : Repository {
+class RepositoryImpl(private val remoteRepository: RemoteRepository) : Repository {
 
-    override fun getSomething() =
-        "Hello GraphQL"
+    override fun getSomething() = remoteRepository.getData()
 }
