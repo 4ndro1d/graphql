@@ -1,4 +1,4 @@
-package com.example.ggwp.graphql.repository
+package com.example.ggwp.graphql.remote
 
 import SearchYelpQuery
 import com.apollographql.apollo.ApolloCall
@@ -8,15 +8,19 @@ import com.apollographql.apollo.rx2.Rx2Apollo
 import io.reactivex.Observable
 
 interface RemoteRepository {
-    fun getData(): Observable<Response<SearchYelpQuery.Data>>
+    fun getData(term: String, location: String): Observable<Response<SearchYelpQuery.Data>>
 }
 
 class GraphQLRepository(private val apolloClient: ApolloClient) : RemoteRepository {
-    override fun getData(): Observable<Response<SearchYelpQuery.Data>> {
+
+    override fun getData(
+        term: String,
+        location: String)
+        : Observable<Response<SearchYelpQuery.Data>> {
 
         val query = SearchYelpQuery.builder()
-            .term("burrito")
-            .location("san francisco")
+            .term(term)
+            .location(location)
             .build()
 
         val apolloCall: ApolloCall<SearchYelpQuery.Data> = apolloClient.query(query)

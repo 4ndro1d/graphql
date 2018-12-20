@@ -1,11 +1,13 @@
 package com.example.ggwp.graphql
 
 import com.apollographql.apollo.ApolloClient
-import com.example.ggwp.graphql.presenter.Presenter
-import com.example.ggwp.graphql.repository.GraphQLRepository
-import com.example.ggwp.graphql.repository.RemoteRepository
-import com.example.ggwp.graphql.repository.Repository
-import com.example.ggwp.graphql.repository.RepositoryImpl
+import com.example.ggwp.graphql.domain.RemoteRestaurantsMapper
+import com.example.ggwp.graphql.domain.Repository
+import com.example.ggwp.graphql.domain.RepositoryImpl
+import com.example.ggwp.graphql.domain.SearchYelpUseCase
+import com.example.ggwp.graphql.presentation.Presenter
+import com.example.ggwp.graphql.remote.GraphQLRepository
+import com.example.ggwp.graphql.remote.RemoteRepository
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.dsl.module.module
@@ -21,8 +23,12 @@ class AppModule {
 
 val appModule = module {
 
-    single<Repository> { RepositoryImpl(get()) }
+    single<Repository> { RepositoryImpl(get(), get()) }
+
+    single { RemoteRestaurantsMapper() }
     single<RemoteRepository> { GraphQLRepository(get()) }
+
+    single<SearchYelpUseCase> { SearchYelpUseCase(get()) }
 
     single<OkHttpClient> {
         OkHttpClient.Builder()
